@@ -1,0 +1,7 @@
+export const LOGIN = '/login'
+export const LIST = 'contract/list'
+export const ROW = 'view-contract/row'
+export const CONTRACTFORM = 'view-contract/row'
+export const ITEMS = 'items'
+export const VENDORLISTING = 'vendors'
+export const CREATCONTRACTFORM = 'contract-creation'

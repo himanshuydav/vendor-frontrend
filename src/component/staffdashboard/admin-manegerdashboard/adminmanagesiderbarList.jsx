@@ -40,7 +40,7 @@ const  MANAGER_SIDEBAR_UL = [
         id: 3,
         label: 'Invoice',
         ref: 'Invoice',
-        activelogo:<i className="mdi mdi-account-multiple menu-icon" />,
+        activelogo:<i className="mdi mdi-comment-processing menu-icon" />,
         nonactivelogo: "",
         path: '#',
         sublist: [    
@@ -56,11 +56,14 @@ const  MANAGER_SIDEBAR_UL = [
 
         ]
     },
-
-   
-
-
-  
+    {
+        id: 4,
+        label: 'aproval flow',
+        ref: 'dash',
+        activelogo: <i className="mdi mdi-directions-fork menu-icon" />,
+        nonactivelogo: "",
+        path: '/approval-flow'
+    }, 
 ]
 
 export default MANAGER_SIDEBAR_UL;

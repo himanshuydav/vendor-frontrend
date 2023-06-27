@@ -6,11 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 
 const VendorListTable = ({search,vendorLists}) => {
- const navigate = useNavigate()
+const navigate = useNavigate()
 
-  const handleViewVendorDetails =(id) =>{
+
+
+const handleViewVendorDetails =(id) =>{
     navigate(`/vendor-dashboard/${id}`);
-  }
+}
 
 
 
@@ -66,7 +68,6 @@ const VendorListTable = ({search,vendorLists}) => {
                          onClick={() => handleViewVendorDetails(item.id)}
                         />
                       </div>
-
 
                     </td>
 

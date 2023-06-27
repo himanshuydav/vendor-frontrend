@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import Icon from "@mdi/react";
 import { mdiFileDocumentEditOutline, mdiReceiptText } from '@mdi/js';
 import { useNavigate } from "react-router-dom";
+import { ModalContext } from "../../Context";
+import Approve from "../../modals/Approve";
 
 
 const ExcuitveTables = ({search,excutiveLists}) => {
  const navigate = useNavigate()
+ const user = JSON.parse(localStorage.getItem('user'))
+ const modalContext = useContext(ModalContext);
+ const { closeModal, handleModalData } = modalContext;
+
 
   const handleViewVendorDetails =(id) =>{
     navigate(`/excuitve-view/${id}`);
+  }
+
+  const handleInvoiceClick = (id) => {
+    navigate(`/add-invoice/${id}`);
+  }
+
+  const handleAproveModal =() =>{
+    const Addpeople = <Approve />
+    handleModalData(Addpeople, "sm")
   }
 
 
@@ -59,11 +74,23 @@ const ExcuitveTables = ({search,excutiveLists}) => {
                       <td className='text-center'>{item.EndDate.substring(0, 10)}</td>
                       <td className='text-center'>{item?.Name}</td>
                       <td style={{ textAlign: "center" }} >
-                      <div className="cursor-pointer">
-                      <Icon path={mdiFileDocumentEditOutline} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
-                         {
-                            item?.Status ==="2" &&  <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }}  />
-                         }
+                      <div className="cursor-pointer d-flex justify-content-center">
+                         <Icon path={mdiFileDocumentEditOutline} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
+                          {
+                          item?.Status === "2" && <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }} onClick={() => handleInvoiceClick(item.id)} />
+
+                          }
+
+                        {
+                          user?.roles[0].RoleName ==="Admin Manager"  && item.Status ===1
+                          &&
+                          <>
+                         <button className="ms-1 aprove-btn" onClick={()=>handleAproveModal()} >Aprove</button>
+                         <button className="ms-2 delete-btn" >reject</button>
+                          </>
+                        }
+
+                   
                 
                       </div>
 

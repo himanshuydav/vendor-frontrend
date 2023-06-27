@@ -10,10 +10,6 @@ const Sidebar = () => {
     const [listShow, setListShow] = useState({ 0: true });
     const user = JSON.parse(localStorage.getItem('user'))
 
-
-
-
-
     const listHandler = (id, sublist, listRef) => {
 
         setActiveLink({ [id]: true });
@@ -27,6 +23,8 @@ const Sidebar = () => {
         }
 
     };
+
+    
 
     return (
         <>

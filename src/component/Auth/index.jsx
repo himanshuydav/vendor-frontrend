@@ -8,10 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import {
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import Icon from "@mdi/react";
 
@@ -26,7 +23,9 @@ import "../../add-on/assets/css/style.css";
 import "../../add-on/assets/css/style.css.map";
 
 import "../../add-on/assets/css/styleDup.css";
+
 import { login } from "../../redux/auth/authSlice";
+
 import Loader from "../common/Loader";
 
 const LoginComp = () => {
@@ -85,16 +84,21 @@ const LoginComp = () => {
 
     if (captcha === captchaInput) {
       // dispatch(loginUser(loginDetails));
-      dispatch(login(loginDetails));
-
-      setError("");
-    } else if (captcha === "") {
+      if(loginDetails?.userType){
+        dispatch(login(loginDetails));
+        setError("");
+      }
+      else{
+        setError("usertype is missing");
+      }
+     
+    } else if (captchaInput === "") {
       setError("input field rquired");
 
       generateCaptcha();
 
       setCaptchaInput("");
-    } else if (!captcha === "captchaInput") {
+    } else if (!captchaInput === "captcha") {
       setError("fill correct captcha");
 
       generateCaptcha();
@@ -111,35 +115,30 @@ const LoginComp = () => {
 
   const handleRefreshCaptcha = () => {
     generateCaptcha();
-
     setCaptchaInput("");
   };
 
- 
   useEffect(() => {
     if (isError) {
-      console.log(message, "hello")
-     }
-
-    if (user?.role ==="Vendor" ) {
-       navigate('/vendor-dashboard')
-    }
-    if (user?.role ==="Staff" ) {
-      if(user?.roleName ==="Admin Executive" ){
-        navigate('/staff-dashboard')
-      }
-      if(user?.roleName ==="Admin Executive" ){
-        navigate('/staff-dashboard')
-      }
-      else{
-        navigate('/admin-maneger-dashboard')
-      }
-
+      console.log(message, "hello");
     }
 
-  }, [user, isError, isSuccess, message, navigate, dispatch])
+    if (user?.role === "Vendor") {
+      navigate("/vendor-dashboard");
+    }
 
+    if (user?.role === "Staff") {
+      if (user?.roles[0].RoleName === "Admin Executive") {
+        navigate("/staff-dashboard");
+      }
 
+      if (user?.roles[0].RoleName === "Admin Executive") {
+        navigate("/staff-dashboard");
+      } else {
+        navigate("/admin-maneger-dashboard");
+      }
+    }
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -149,7 +148,7 @@ const LoginComp = () => {
     <>
       <Loader isLoading={isLoading} />
 
-       <div className="container-fluid page-body-wrapper full-page-wrapper">
+      <div className="container-fluid page-body-wrapper full-page-wrapper">
         <div className="content-wrapper d-flex align-items-center auth login-screen">
           <div className="background col-lg-12">
             <div className="row flex-grow">
@@ -170,11 +169,11 @@ const LoginComp = () => {
 
                   <form className="pt-3" id="form_id">
                     <div className="form-group">
-                      <div className="custom-radio-group row btn-transparent">
-                        <div className="col-lg-4">
+                      <div className="custom-radio-group row btn-transparent rowsize">
+                        <div className=" col-lg-4 col-md-4  login-width-small-screen ">
                           <button disabled>
-                            <div className="row">
-                              <div className="col-lg-2">
+                            <div className="row ">
+                              <div className=" col-lg-2 col-md-2 col-sm-2">
                                 <input
                                   className="radio-input"
                                   type="radio"
@@ -189,16 +188,11 @@ const LoginComp = () => {
                                 />
                               </div>
 
-                              <div className="col-lg-2">
+                              <div className=" col-lg-2  col-md-2 col-sm-2 ">
                                 <label
-                                  className="radio-label"
-                                  style={{
-                                    "font-size": "large",
-                                    color: "aquawhite",
-                            
-                                  }}
+                                  className="radio-label radio-size"
                                   htmlFor="Vendor"
-                                >
+                                 >
                                   Vendor
                                 </label>
                               </div>
@@ -206,10 +200,10 @@ const LoginComp = () => {
                           </button>
                         </div>
 
-                        <div className="col-lg-4">
+                        <div className="col-lg-4 col-md-4 col-sm-4 login-width-small-screen">
                           <button disabled>
                             <div className="row">
-                              <div className="col-lg-2">
+                              <div className="col-lg-2 col-md-2 col-sm-2">
                                 <input
                                   className="radio-input"
                                   type="radio"
@@ -224,13 +218,9 @@ const LoginComp = () => {
                                 />
                               </div>
 
-                              <div className="col-lg-2">
+                              <div className="col-lg-2 col-md-2 col-sm-2">
                                 <label
-                                  className="radio-label"
-                                  style={{
-                                    "font-size": "large",
-                                    color: "aliceblue",
-                                  }}
+                                  className="radio-label radio-size"
                                   htmlFor="Staff"
                                 >
                                   Staff
@@ -240,10 +230,10 @@ const LoginComp = () => {
                           </button>
                         </div>
 
-                        <div className="col-lg-4">
+                        <div className="col-lg-4 col-md-4 col-sm-4 login-width-small-screen">
                           <button disabled>
                             <div className="row">
-                              <div className="col-lg-2">
+                              <div className="col-lg-2 col-md-2 col-sm-">
                                 <input
                                   className="radio-input"
                                   type="radio"
@@ -258,13 +248,9 @@ const LoginComp = () => {
                                 />
                               </div>
 
-                              <div className="col-lg-2">
+                              <div className="col-lg-2 col-md-2 col-sm-">
                                 <label
-                                  className="radio-label"
-                                  style={{
-                                    "font-size": "large",
-                                    color: "aliceblue",
-                                  }}
+                                  className="radio-label  radio-size"
                                   htmlFor="Finance"
                                 >
                                   Finance
@@ -310,9 +296,8 @@ const LoginComp = () => {
                         />
 
                         <div
-                          className="input-group-addon eye-div"
+                          className="input-group-addon eye-div "
                           onClick={togglePasswordVisibility}
-                          style={{ padding: "9px  9px" }}
                         >
                           <FontAwesomeIcon
                             icon={showPassword ? faEyeSlash : faEye}
@@ -321,12 +306,12 @@ const LoginComp = () => {
                       </div>
                     </div>
 
-                    <div className="row ml0">
+                    <div className="row ml0 ">
                       <div className="col-md-6 refresh_btn">
                         <input
                           required
                           id="captcha"
-                          className="form-control"
+                          className="form-control common-form-control"
                           value={captcha}
                           autoComplete="off"
                           disabled
@@ -339,11 +324,11 @@ const LoginComp = () => {
                         />
                       </div>
 
-                      <div className="col-md-6  ">
+                      <div className="col-md-6 size ">
                         <input
                           type="text"
                           id="captchatext"
-                          className="form-control"
+                          className="form-control common-form-control"
                           placeholder="Enter Captcha"
                           name="captchaInput"
                           value={captchaInput}

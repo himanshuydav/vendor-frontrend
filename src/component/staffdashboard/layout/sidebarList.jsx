@@ -13,7 +13,7 @@ const SIDEBAR_UL = [
         id: 2,
         label: 'Contract',
         ref: 'Contract',
-        activelogo:<i class="mdi mdi-account-multiple menu-icon" />,
+        activelogo:<i className="mdi mdi-account-multiple menu-icon" />,
         nonactivelogo: "",
         path: '#',
         sublist: [
@@ -33,18 +33,8 @@ const SIDEBAR_UL = [
                 path: 'contract-listing',
                 ref: 'user',
             },
-
-
-
-
-
         ]
-    },
-
-   
-
-
-  
+    }, 
 ]
 
 export default SIDEBAR_UL;

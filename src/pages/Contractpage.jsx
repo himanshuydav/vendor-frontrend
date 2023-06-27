@@ -1,124 +1,137 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDropDown, fetchVendorlist } from "../redux/staff/ContractSlice";
-import { FaTrash } from 'react-icons/fa';
-import axios from 'axios';
+import { FaTrash } from "react-icons/fa";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ContractForm } from "../utils/services";
 import { toast } from "react-toastify";
 
 const Contractpage = () => {
-   const dispatch = useDispatch()
-   const navigate = useNavigate()
-   const { vendors } = useSelector((state) => state?.contract?.dropdownVendor);
-   const { items } = useSelector((state) => state.contract.dropdownItems);
-   const [errors, setErrors] = useState({});
-   const [formState, setFormState] = useState({vendor: '', startDate: '',  endDate: '', lineItems: [{}], attachDocuments: false,files: [] });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { vendors } = useSelector((state) => state?.contract?.dropdownVendor);
+  const { items } = useSelector((state) => state.contract.dropdownItems);
+  const [errors, setErrors] = useState({});
+  const [formState, setFormState] = useState({
+    vendor: "",
+    startDate: "",
+    endDate: "",
+    lineItems: [{}],
+    attachDocuments: false,
+    files: [],
+  });
+  const [finalTotalAmount, setFinalTotalAmount] = useState(0);
+  const user = JSON.parse(localStorage.getItem('user'))
 
 
+   useEffect(() => {
+     const calculateFinalTotalAmount = () => {
+       const total = formState.lineItems.reduce(
+        (acc, item) => acc + parseFloat(item.totalAmount || 0),
+        0
+      );
 
+      setFinalTotalAmount(total.toFixed(2));
+     };
 
+    calculateFinalTotalAmount();
+  }, [formState.lineItems]);
 
-   const validateForm = () => {
-      let errors = {};
+  const validateForm = () => {
+    let errors = {};
 
-      if (!formState.vendor) {
-         errors.vendor = 'Vendor is required';
+    if (!formState.vendor) {
+      errors.vendor = "Vendor is required";
+    }
+
+    if (!formState.startDate) {
+      errors.startDate = "Start Date is required";
+    }
+
+    if (!formState.endDate) {
+      errors.endDate = "End Date is required";
+    }
+
+    errors.lineItems = [];
+    formState.lineItems.forEach((item, index) => {
+      const lineItemErrors = {};
+
+      if (!item.item) {
+        lineItemErrors.item = "Item is required";
       }
-      
-      if (!formState.startDate) {
-         errors.startDate = 'Start Date is required';
-         }
-      
-         if (!formState.endDate) {
-            errors.endDate = 'End Date is required';
-         }
 
-        errors.lineItems = []
-        formState.lineItems.forEach((item, index) => {
-        const lineItemErrors = {};
-        
-        if (!item.item) {
-           lineItemErrors.item = 'Item is required';
-         }
-         
-         if (!item.baseRate) {
-            lineItemErrors.baseRate = 'Base rate is required';
-         }
-         
-         if (!item.quantity) {
-            lineItemErrors.quantity = 'Quantity is required';
-         }
-         
-         if (Object.keys(lineItemErrors).length > 0) {
-            errors.lineItems[index] = lineItemErrors;
-         }
+      if (!item.baseRate) {
+        lineItemErrors.baseRate = "Base rate is required";
+      }
 
-        return lineItemErrors;
-        });
+      if (!item.quantity) {
+        lineItemErrors.quantity = "Quantity is required";
+      }
 
-         if (errors.lineItems.length === 0) {
-            delete errors.lineItems;
-            }
-      
-         if (formState.attachDocuments && (!formState.files || formState.files.length === 0)) {
-         errors.files = 'Please attach file';
-         }
+      if (Object.keys(lineItemErrors).length > 0) {
+        errors.lineItems[index] = lineItemErrors;
+      }
+
+      return lineItemErrors;
+    });
+
+    if (errors.lineItems.length === 0) {
+      delete errors.lineItems;
+    }
+
+    if (
+      formState.attachDocuments &&
+      (!formState.files || formState.files.length === 0)
+    ) {
+      errors.files = "Please attach file";
+    }
 
     setErrors(errors);
-    
+
     return Object.keys(errors).length === 0;
-   };
-   
-   
-   
+  };
 
-
-const handleSubmit = async(e) => {
-
-    e.preventDefault()
-    const isValid = validateForm()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isValid = validateForm();
     if (isValid) {
+      const formData = new FormData();
+      formData.append("vendor", formState.vendor);
+      formData.append("startDate", formState.startDate);
+      formData.append("endDate", formState.endDate);
+      formData.append("attachDocuments", formState.attachDocuments);
+      formData.append("lineItems", JSON.stringify(formState.lineItems));
+      formData.append("finalTotalAmount", finalTotalAmount);
+      formData.append("recordId", user?.records[2]?.id);
+      formData.append("roleId",user?.roles[0].id);
 
-        const formData = new FormData();
-        formData.append("vendor", formState.vendor);
-        formData.append("startDate", formState.startDate);
-        formData.append("endDate", formState.endDate)
-        formData.append("attachDocuments", formState.attachDocuments);
-        formData.append('lineItems', JSON.stringify(formState.lineItems));
+      for (const file of formState.files) {
+        formData.append("files", file);
+      }
+      const result = await ContractForm(formData);
+      toast.success(result.res.message);
+      navigate("/contract-listing");
 
-        for (const file of formState.files) {
-           formData.append('files', file);
-         }
-        const result =await ContractForm(formData)
-        toast.success(result.res.message)
-        navigate('/contract-listing')
-         
-         
       //   dispatch(formDetails(formData));
-      
+
       //   openModal()
+    }
+  };
 
-   }
-   
-}
+  const currentDate = new Date().toISOString().split("T")[0];
+  const minEndDate = formState.startDate
+    ? new Date(formState.startDate)
+    : new Date();
 
+  minEndDate.setDate(minEndDate.getDate() + 1);
 
+  const setEndDate = minEndDate.toISOString().split("T")[0];
+  const isDisabled = !formState.startDate;
 
-const currentDate = new Date().toISOString().split('T')[0];
-const minEndDate = formState.startDate
-? new Date(formState.startDate)
-: new Date();
-
-minEndDate.setDate(minEndDate.getDate() + 1);
-
-const setEndDate = minEndDate.toISOString().split('T')[0];
-const isDisabled = !formState.startDate;
-
-
-const handleFileInputChange = (e) => {
-   const files = e.target.files;
-   setFormState((prevState) => ({
+  const handleFileInputChange = (e) => {
+    const files = e.target.files;
+    setFormState((prevState) => ({
       ...prevState,
       files: Array.from(files),
     }));
@@ -126,155 +139,135 @@ const handleFileInputChange = (e) => {
     const updatedErrors = { ...errors };
     delete updatedErrors.files;
     setErrors(updatedErrors);
-   };
-   
-   const [terms, setTerms] = useState("");
-   const [subsidiary, setSubsidiary] = useState("");
-   
-   
-   const handleInputChange = async (e) => {
+  };
 
+  const [terms, setTerms] = useState("");
+  const [subsidiary, setSubsidiary] = useState("");
+
+  const handleInputChange = async (e) => {
     const { name, value, type, checked } = e.target;
 
     const inputValue = type === "checkbox" ? checked : value;
 
     setErrors((prevErrors) => {
-        const updatedErrors = { ...prevErrors };
-        delete updatedErrors[name];
-        return updatedErrors;
-      });
-      
-      
-      
-      setFormState((prevState) => ({   
-         ...prevState,      
-         [name]: inputValue,
-          }));
+      const updatedErrors = { ...prevErrors };
+      delete updatedErrors[name];
+      return updatedErrors;
+    });
 
-       if (name === "vendor") {
-         try {
-            const response = await axios.get(`http://localhost:3001/vendor-details/vendor/${value}`);
-            const rows = response.data
-            console.log(rows);         
-            if (rows.length > 0) {
-               const firstRow = rows[0];              
-               setTerms(firstRow.Term)
-               setSubsidiary(firstRow.Name)
-            }
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: inputValue,
+    }));
 
-         } catch (error) {
-            console.log(error);
-         }
+    if (name === "vendor") {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/vendor-details/vendor/${value}`
+        );
+        const rows = response.data;
+        console.log(rows);
+        if (rows.length > 0) {
+          const firstRow = rows[0];
+          setTerms(firstRow.Term);
+          setSubsidiary(firstRow.Name);
+        }
+      } catch (error) {
+        console.log(error);
       }
-      
-   };
-   
-   
-   const handleItemChange = (e, index) => {
-      
-      const { name, value } = e.target;
-      
-      let newValue;
-      if (name === 'baseRate') {
-         
-         newValue = value.replace(/[^0-9.]/g, '');
-         
-         const dotindex = newValue.indexOf('.');
-         
-         if (dotindex !== -1 && newValue.length - dotindex > 3) {
-            newValue = newValue.slice(0, dotindex + 3);
-         }
+    }
+  };
 
-    } else if (name === 'quantity') {
+  const handleItemChange = (e, index) => {
+    const { name, value } = e.target;
 
-        newValue = value.replace(/[^0-9]/g, '');
+    let newValue;
+    if (name === "baseRate") {
+      newValue = value.replace(/[^0-9.]/g, "");
+
+      const dotindex = newValue.indexOf(".");
+
+      if (dotindex !== -1 && newValue.length - dotindex > 3) {
+        newValue = newValue.slice(0, dotindex + 3);
+      }
+    } else if (name === "quantity") {
+      newValue = value.replace(/[^0-9]/g, "");
     } else {
+      newValue = value;
+    }
 
-       newValue = value;
-      }
-      
-      
-      
-      const updatedLineItems = [...formState.lineItems];
-      updatedLineItems[index] = {
-         ...updatedLineItems[index],
-         [name]: newValue,
-      };
+    const updatedLineItems = [...formState.lineItems];
+    updatedLineItems[index] = {
+      ...updatedLineItems[index],
+      [name]: newValue,
+    };
 
-      const baseRate = parseFloat(updatedLineItems[index].baseRate);
-      const quantity = parseFloat(updatedLineItems[index].quantity);
-      const totalAmount = isNaN(baseRate) || isNaN(quantity) ? '' : (baseRate * quantity).toFixed(2);
-    
-      updatedLineItems[index].totalAmount = totalAmount;
-    
+    const baseRate = parseFloat(updatedLineItems[index].baseRate);
+    const quantity = parseFloat(updatedLineItems[index].quantity);
+    const totalAmount =
+      isNaN(baseRate) || isNaN(quantity)
+        ? ""
+        : (baseRate * quantity).toFixed(2);
+
+    updatedLineItems[index].totalAmount = totalAmount;
+
     setFormState((prevState) => ({
-       ...prevState,
-       lineItems: updatedLineItems,
-      }));
+      ...prevState,
+      lineItems: updatedLineItems,
+    }));
 
-      
-      const updatedErrors = { ...errors };
-      if (updatedErrors.lineItems && updatedErrors.lineItems[index]) {
-         delete updatedErrors.lineItems[index][name];
-      }
-      
-      setErrors(updatedErrors);
-      
+    const updatedErrors = { ...errors };
+    if (updatedErrors.lineItems && updatedErrors.lineItems[index]) {
+      delete updatedErrors.lineItems[index][name];
+    }
 
-};
+    setErrors(updatedErrors);
+  };
 
-const handleRemoveItem = (index, event) => {
-
+  const handleRemoveItem = (index, event) => {
     event.preventDefault();
-    
+
     if (formState.lineItems.length === 1) {
-       
-       alert('Atlest one item should be there');
-       return;
-      }
-      
-      const updatedLineItems = [...formState.lineItems];
-      updatedLineItems.splice(index, 1);
-      
-      const updatedErrors = { ...errors };
-      if (updatedErrors.lineItems && updatedErrors.lineItems.length > index) {
-         updatedErrors.lineItems.splice(index, 1);
-      }
+      alert("Atlest one item should be there");
+      return;
+    }
+
+    const updatedLineItems = [...formState.lineItems];
+    updatedLineItems.splice(index, 1);
+
+    const updatedErrors = { ...errors };
+    if (updatedErrors.lineItems && updatedErrors.lineItems.length > index) {
+      updatedErrors.lineItems.splice(index, 1);
+    }
 
     setFormState((prevState) => ({
-       ...prevState,
-       lineItems: updatedLineItems,
-      }));
-      
-      
-      setErrors(updatedErrors);
-      
-   };
+      ...prevState,
+      lineItems: updatedLineItems,
+    }));
 
+    setErrors(updatedErrors);
+  };
 
-   const handleAddItem = () => {  
-      const newItem = {
-         item: '',
-         baseRate: '',
-         quantity: '',
-         totalAmount: '',
-      };
-      setFormState((prevState) => ({
-         ...prevState,
-        lineItems: [...prevState.lineItems, newItem],
-      }));
-};
+  const handleAddItem = () => {
+    const newItem = {
+      item: "",
+      baseRate: "",
+      quantity: "",
+      totalAmount: "",
+    };
+    setFormState((prevState) => ({
+      ...prevState,
+      lineItems: [...prevState.lineItems, newItem],
+    }));
+  };
 
+  useEffect(() => {
+    dispatch(fetchDropDown());
+    dispatch(fetchVendorlist());
+  }, [dispatch]);
 
-
-useEffect(() => {
-  dispatch(fetchDropDown());
-  dispatch(fetchVendorlist());
-}, [dispatch]);
-
-
-return (
-   <div>
+  return (
+    <div>
       <div className="card border-secondary mt-4">
         <div className="card-header">
           <h3>Contract Form</h3>
@@ -297,11 +290,12 @@ return (
                 >
                   <option value="">Select</option>
 
-                  {vendors && vendors?.map((item) => (
-                    <option key={item.Id} value={item.id}>
-                      {item.LegalName}
-                    </option>
-                  ))}
+                  {vendors &&
+                    vendors?.map((item) => (
+                      <option key={item.Id} value={item.id}>
+                        {item.LegalName}
+                      </option>
+                    ))}
                 </select>
 
                 {errors.vendor && (
@@ -417,11 +411,12 @@ return (
                           required
                         >
                           <option value="">Select</option>
-                          { items && items.map((item) => (
-                            <option key={item.Id} value={item.id}>
-                              {item.Name}
-                            </option>
-                          ))}
+                          {items &&
+                            items.map((item) => (
+                              <option key={item.Id} value={item.id}>
+                                {item.Name}
+                              </option>
+                            ))}
                         </select>
 
                         {errors.lineItems &&
@@ -521,22 +516,40 @@ return (
               </div>
             </div>
 
+            <div className="row mb-4">
+              <div className="col-md-3">
+                <label htmlFor="finalTotalAmount" className="form-label">
+                  Final Total Amount
+                </label>
+
+                <input
+                  type="text"
+                  id="finalTotalAmount"
+                  className="form-control"
+                  name="finalTotalAmount"
+                  value={finalTotalAmount}
+                  disabled
+                />
+              </div>
+            </div>
+
             <div className="row mb-3">
               <div className="col-md-12">
-        
-                  <input
-                    type="checkbox"
-                    id="attachDocuments"
-                    className="form-check-input"
-                    name="attachDocuments"
-                    checked={formState.attachDocuments}
-                    onChange={handleInputChange}
-                  />
+                <input
+                  type="checkbox"
+                  id="attachDocuments"
+                  className="form-check-input"
+                  name="attachDocuments"
+                  checked={formState.attachDocuments}
+                  onChange={handleInputChange}
+                />
 
-                  <label htmlFor="attachDocuments" className="form-check-label ms-2">
-                    Check for attach documents
-                  </label>
-        
+                <label
+                  htmlFor="attachDocuments"
+                  className="form-check-label ms-2"
+                >
+                  Check for attach documents
+                </label>
               </div>
             </div>
 

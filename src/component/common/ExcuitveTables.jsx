@@ -15,7 +15,7 @@ const ExcuitveTables = ({search,excutiveLists}) => {
 
 
   const handleViewVendorDetails =(id) =>{
-    navigate(`/excuitve-view/${id}`);
+    navigate(`/manager-view/${id}`);
   }
 
   const handleInvoiceClick = (id) => {

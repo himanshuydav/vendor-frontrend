@@ -158,6 +158,7 @@ const ApprovalFlow = () => {
               <select
                 class="form-select"
                 aria-label="Default select example"
+                value={transactionId}
                onChange={(e)=>setTransactionId(e.target.value)}
               >
                 <option selected>Open this select menu</option>
@@ -176,7 +177,7 @@ const ApprovalFlow = () => {
               <p className="mb-1">Level 0</p>
               <select
                 class="form-select"
-                value={transactionId}
+              
                 aria-label="Default select example"
                 onChange={(e) => handleSelect(e)}
               >

@@ -10,11 +10,8 @@ const MainWrapper = () => {
     <div>
       <Routes>
         <Route path="/staff-dashboard" element={<ExcuvtiveDashboard />} />
-
         <Route path="/excuitve-view/:id" element={<VendorView />} />
-
         <Route path="/contract-listing" element={<ExcuvtiveDashboard />} />
-
         <Route path="/add-excutive-contract" element={<Contractpage />} />
         <Route path="/add-invoice/:id" element={<CreateInvoice/>} />
       </Routes>

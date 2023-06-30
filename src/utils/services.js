@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  APPROVAL_FLOW,
   CREATCONTRACTFORM,
   CREATEINVOICEFORM,
   ITEMS,
@@ -134,6 +135,21 @@ export const getNextRole = async (value) => {
   try {
     const response = await axios.get(`${NEXTAPPROVAL_LIST}/${value}`, {
       headers: { "Content-Type": "application/json" },
+    });
+    if (response.status === 200) {
+      return { res: response.data };
+    } else return response.data;
+  } catch (err) {
+    if (err.response) throw err.response.data;
+    else throw err.message;
+  }
+};
+
+export const ApprovalFlowApi = async (data) => {
+  try {
+    const response = await axios.post(APPROVAL_FLOW, data, {
+      headers: { "Content-Type": "application/json" },
+      
     });
     if (response.status === 200) {
       return { res: response.data };

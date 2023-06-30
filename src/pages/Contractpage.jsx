@@ -22,7 +22,7 @@ const Contractpage = () => {
     files: [],
   });
   const [finalTotalAmount, setFinalTotalAmount] = useState(0);
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('user'));
 
 
    useEffect(() => {
@@ -103,7 +103,7 @@ const Contractpage = () => {
       formData.append("attachDocuments", formState.attachDocuments);
       formData.append("lineItems", JSON.stringify(formState.lineItems));
       formData.append("finalTotalAmount", finalTotalAmount);
-      formData.append("recordId", user?.records[2]?.id);
+      formData.append("transactionId", user?.transactions[2]?.id);
       formData.append("roleId",user?.roles[0].id);
 
       for (const file of formState.files) {
@@ -265,6 +265,9 @@ const Contractpage = () => {
     dispatch(fetchDropDown());
     dispatch(fetchVendorlist());
   }, [dispatch]);
+
+
+ 
 
   return (
     <div>

@@ -817,3 +817,21 @@ margin: 0 auto;
   background-color: #fff;
 }
 
+.submitbtn{
+  width: 140px;
+  height: 45px;
+  background-color: orange;
+  border: none;
+
+}
+.submitbtn:hover{
+  background-color: rgb(237, 170, 36);
+}
+
+.flow-level p{
+  font-weight: 500;
+}
+.flow-level span{
+  font-size: 25px;
+}
+

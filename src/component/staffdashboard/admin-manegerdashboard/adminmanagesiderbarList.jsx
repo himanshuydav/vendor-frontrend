@@ -6,7 +6,7 @@ const  MANAGER_SIDEBAR_UL = [
         ref: 'dash',
         activelogo: <i className="mdi mdi-home menu-icon" />,
         nonactivelogo: "",
-        path: '/admin-manager-dashboard'
+        path: '/'
     },
 
     {
@@ -58,7 +58,7 @@ const  MANAGER_SIDEBAR_UL = [
     },
     {
         id: 4,
-        label: 'aproval flow',
+        label: 'Approval flow',
         ref: 'dash',
         activelogo: <i className="mdi mdi-directions-fork menu-icon" />,
         nonactivelogo: "",

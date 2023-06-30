@@ -135,7 +135,7 @@ const LoginComp = () => {
       if (user?.roles[0].RoleName === "Admin Executive") {
         navigate("/staff-dashboard");
       } else {
-        navigate("/admin-maneger-dashboard");
+        navigate("/");
       }
     }
   }, [user, isError, isSuccess, message, navigate, dispatch]);

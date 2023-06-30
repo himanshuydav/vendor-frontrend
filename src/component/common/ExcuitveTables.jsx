@@ -77,7 +77,7 @@ const ExcuitveTables = ({search,excutiveLists}) => {
                       <div className="cursor-pointer d-flex justify-content-center">
                          <Icon path={mdiFileDocumentEditOutline} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
                           {
-                          item?.Status === "2" && <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }} onClick={() => handleInvoiceClick(item.id)} />
+                          item?.Status === 2 && <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }} onClick={() => handleInvoiceClick(item.id)} />
 
                           }
 

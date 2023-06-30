@@ -10,7 +10,7 @@ const ManagerMainBar = () => {
   return (
     <div>
       <Routes>
-        <Route path="/admin-manager-dashboard" element={<ExcuvtiveDashboard />} />
+        <Route path="/" element={<ExcuvtiveDashboard />} />
         <Route path="/manager-view/:id" element={<VendorView />} />
         <Route path="/contract-list" element={<ExcuvtiveDashboard />} />
         <Route path="/add-manager-contract" element={<Contractpage />} />

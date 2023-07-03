@@ -38,7 +38,7 @@ const ApprovalFlow = () => {
     try {
       const result = await getNextRole(e.target.value);
       if(result.res.length === 0){
-        toast.success("not upper level found")
+        toast.success("No Upper Levels Found")
       }
       setNextApprovalListzero(result.res);
       setNextApprovalListone([])
@@ -116,11 +116,8 @@ const ApprovalFlow = () => {
     handleRoleApi();
   }, []);
 
-
   
-  const handleSubmit =async() =>{
-
-
+    const handleSubmit =async() =>{
     let data2 = [zeroLevel,oneLevel,twoLevel,threeLevel,fourLevel]
     let data3 =[oneLevel,twoLevel,threeLevel,fourLevel]
     let result = data2.filter(item => item !== undefined)
@@ -147,6 +144,11 @@ const ApprovalFlow = () => {
     
       <div className="card">
         <div className="card-body">
+          <div>
+       
+          </div>
+     
+
           <h3 className="card-title">Approval Flow</h3>
 
           <div className="form-group row">
@@ -161,7 +163,6 @@ const ApprovalFlow = () => {
                 value={transactionId}
                onChange={(e)=>setTransactionId(e.target.value)}
               >
-                <option selected>Open this select menu</option>
                   {
                     user?.transactions?.map((item)=>(
                       <option value={item?.id}>{item?.Name}</option>
@@ -176,12 +177,12 @@ const ApprovalFlow = () => {
             <div className="">
               <p className="mb-1">Level 0</p>
               <select
-                class="form-select"
-              
+                class="form-select"             
                 aria-label="Default select example"
+                value={zeroLevel}
                 onChange={(e) => handleSelect(e)}
               >
-                <option selected>Open this select menu</option>
+                {/* <option selected>Open this select menu</option> */}
                 {roles?.map((items) => (
                   <option value={items?.Levels}>{items?.RoleName}</option>
                 ))}
@@ -204,6 +205,7 @@ const ApprovalFlow = () => {
               <select
                 class="form-select"
                 aria-label="Default select example"
+                value={oneLevel}
                 onChange={(e) => handleSelectOne(e)}
               >
                 {nextApprovallistzero?.map((item) => (
@@ -253,7 +255,7 @@ const ApprovalFlow = () => {
            {nextApprovallistThree.length > 0 && (
             <div className="col-5 mt-3">
               <div>
-                <p className="mb-1">Level 3</p>
+                <p className="mb-1">Level 4</p>
                 <select class="form-select" aria-label="Default select example">
                   {nextApprovallistThree?.map((item) => (
                     <option value={item?.Levels}>{item?.RoleName}</option>
@@ -265,7 +267,7 @@ const ApprovalFlow = () => {
            {nextApprovallistFour.length > 0 && (
             <div className="col-5 mt-3">
               <div>
-                <p className="mb-1">Level 4</p>
+                <p className="mb-1">Level 5</p>
                 <select class="form-select" aria-label="Default select example" onClick={(e)=>handleSelectFour(e)}>
                   {nextApprovallistFour?.map((item) => (
                     <option value={item?.Levels}>{item?.RoleName}</option>

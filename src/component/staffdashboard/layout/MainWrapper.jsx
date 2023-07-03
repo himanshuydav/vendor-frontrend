@@ -4,12 +4,13 @@ import ExcuvtiveDashboard from "../../../pages/staff/executive/ExcuvtiveDashboar
 import VendorView from "../../common/VendorView";
 import Contractpage from "../../../pages/Contractpage";
 import CreateInvoice from "../../../pages/vendor/CreateInvoice";
+import ExecutiveHome from "../../../pages/staff/executive/ExecutiveHome";
 
 const MainWrapper = () => {
   return (
     <div>
       <Routes>
-        <Route path="/staff-dashboard" element={<ExcuvtiveDashboard />} />
+        <Route path="/" element={<ExecutiveHome />} />
         <Route path="/excuitve-view/:id" element={<VendorView />} />
         <Route path="/contract-listing" element={<ExcuvtiveDashboard />} />
         <Route path="/add-excutive-contract" element={<Contractpage />} />

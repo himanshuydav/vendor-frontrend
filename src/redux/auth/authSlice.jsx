@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
+import { toast } from 'react-toastify'
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'))
@@ -19,7 +20,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
         return await authService.login(user)
     } catch (error) {
-        console.log(error, "check")
+        // toast.error("input login id and password not match ")
         const message =
             (error.response && error.response.data && error.response.data.apiMessage) ||
             error.message ||

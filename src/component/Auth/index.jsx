@@ -27,6 +27,7 @@ import "../../add-on/assets/css/styleDup.css";
 import { login } from "../../redux/auth/authSlice";
 
 import Loader from "../common/Loader";
+import { toast } from "react-toastify";
 
 const LoginComp = () => {
   let navigate = useNavigate();
@@ -85,21 +86,24 @@ const LoginComp = () => {
     if (captcha === captchaInput) {
       // dispatch(loginUser(loginDetails));
       if(loginDetails?.userType){
-        dispatch(login(loginDetails));
-        setError("");
+       
+          dispatch(login(loginDetails));
+          setError("");
+         
+         
       }
       else{
-        setError("usertype is missing");
+        setError("please select usertpe");
       }
      
     } else if (captchaInput === "") {
-      setError("input field rquired");
+      setError("captcha is rquired");
 
       generateCaptcha();
 
       setCaptchaInput("");
     } else if (!captchaInput === "captcha") {
-      setError("fill correct captcha");
+      setError("Fill correct captcha");
 
       generateCaptcha();
 
@@ -119,13 +123,13 @@ const LoginComp = () => {
   };
 
   useEffect(() => {
-    if (isError) {
-      console.log(message, "hello");
-    }
-
-    if (user?.role === "Vendor") {
+      if(isError){
+        toast.error("input login id and password not match")
+      }
+  
+     if (user?.role === "Vendor") {
       navigate("/vendor-dashboard");
-    }
+     }
 
     if (user?.role === "Staff") {
       if (user?.roles[0].RoleName === "Admin Executive") {

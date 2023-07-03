@@ -1,17 +1,17 @@
 import React, { useContext } from "react";
 
 import Icon from "@mdi/react";
-import { mdiFileDocumentEditOutline, mdiReceiptText } from '@mdi/js';
+import { mdiEye, mdiReceiptText } from '@mdi/js';
 import { useNavigate } from "react-router-dom";
 import { ModalContext } from "../../Context";
-import Approve from "../../modals/Approve";
+import VpApporve from "../../modals/VpApporve";
 
 
-const ExcuitveTables = ({search,excutiveLists}) => {
+const VpTables = ({search,excutiveLists,handleVendorSort}) => {
  const navigate = useNavigate()
  const user = JSON.parse(localStorage.getItem('user'))
  const modalContext = useContext(ModalContext);
- const { closeModal, handleModalData } = modalContext;
+ const { handleModalData } = modalContext;
 
 
   const handleViewVendorDetails =(id) =>{
@@ -23,7 +23,7 @@ const ExcuitveTables = ({search,excutiveLists}) => {
   }
 
   const handleAproveModal =(item ) =>{
-    const Addpeople = <Approve item={item}  />
+    const Addpeople = <VpApporve item={item} handleVendorSort={handleVendorSort}  />
     handleModalData(Addpeople, "md")
   }
 
@@ -65,12 +65,16 @@ const ExcuitveTables = ({search,excutiveLists}) => {
                     else if (val && val.EndDate.substring(0, 10) && val.EndDate.substring(0, 10).toLowerCase().includes(search.toLowerCase())) {
                         return val
                     }
-                    else if (val && val.DocumentNo && val.DocumentNo.toLowerCase().includes(search.toLowerCase())) {
+                    else if (val && val.EndDate.substring(0, 10) && val.EndDate.substring(0, 10).toLowerCase().includes(search.toLowerCase())) {
                         return val
                     }
-                    else if (val && val.Name&& val.Name.toLowerCase().includes(search.toLowerCase())) {
+                    else if (val && val.DocumentNo.substring(0, 10) && val.DocumentNo.substring(0, 10).toLowerCase().includes(search.toLowerCase())) {
                       return val
-                  }                  
+                  }
+                  else if (val && val.Name.substring(0, 10) && val.Name.substring(0, 10).toLowerCase().includes(search.toLowerCase())) {
+                    return val
+                }
+                   
 
                 }).map((item,index)=>(
                       <tr key={index}>
@@ -82,23 +86,22 @@ const ExcuitveTables = ({search,excutiveLists}) => {
                       <td className='text-center'>{item?.Name}</td>
                       <td style={{ textAlign: "center" }} >
                       <div className="cursor-pointer d-flex justify-content-center">
-                         <Icon path={mdiFileDocumentEditOutline} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
+                         <Icon path={mdiEye} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
                           {
-                          item?.Status === 2 && <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }} onClick={() => handleInvoiceClick(item.id)} />
+                           item?.Status === 2 && <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }} onClick={() => handleInvoiceClick(item.id)} />
 
                           }
 
                         {
-                          user?.roles[0].RoleName ==="Admin Manager"  && item.Status ===1
+                          user?.roles[0].RoleName ==="VP Operations"  && item.Status === 4
                           &&
                           <>
                          <button className="ms-1 aprove-btn" onClick={()=>handleAproveModal(item)} >Approve</button>
                          <button className="ms-2 delete-btn" onClick={()=>handleRejectModal()} >Reject</button>
                           </>
                         }
-                     
+                                 
                       </div>
-
 
                     </td>
 
@@ -120,4 +123,4 @@ const ExcuitveTables = ({search,excutiveLists}) => {
   );
 };
 
-export default ExcuitveTables;
+export default VpTables;

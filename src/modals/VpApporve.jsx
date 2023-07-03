@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { ModalContext } from '../Context';
 import { Approvalprocess } from '../utils/services';
 
-const Approve = ({item}) => {
+const VpApporve = ({item,handleVendorSort}) => {
     const [loading,setLoading] =useState(false)
     const modalContext = useContext(ModalContext);
     const { closeModal } = modalContext;
@@ -14,6 +14,7 @@ const Approve = ({item}) => {
          "roleId" :user?.roles[0].id, 
          "contractId":item.id
       })
+      handleVendorSort()
       closeModal()
     }
 
@@ -36,4 +37,4 @@ const Approve = ({item}) => {
   )
 }
 
-export default Approve
+export default VpApporve

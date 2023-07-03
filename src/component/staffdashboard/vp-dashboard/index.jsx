@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Header from "../layout/Header";
-import AddminManagerSideBar from "./AddminManagerSidenav";
-import ManagerMainBar from "./ManagerMainBar";
+import VpMainBar from "./VpMainBar";
+import VpSidenav from "./VpSidenav";
+
 
 const AdminVpOpration = () => {
   const [togglerBar, setTogglerBar] = useState(true);
@@ -11,11 +12,10 @@ const AdminVpOpration = () => {
       <Header setTogglerBar={setTogglerBar} togglerBar={togglerBar} />
       <div className="Layout d-flex ">
         <div className="side-nav">
-          <AddminManagerSideBar />
+         <VpSidenav />
         </div>
-
         <div className={togglerBar ? "page-container" : "page-container-full"}>
-          <ManagerMainBar />
+          <VpMainBar />
         </div>
       </div>
     </div>

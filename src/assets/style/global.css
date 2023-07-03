@@ -107,7 +107,7 @@ body {
 .page-container {
   width: calc(100% - 260px);
   padding: 2.75rem 2.25rem;
-  height: 90.5vh;
+  height: 89.7vh;
   overflow-y: scroll;
   background: #f2edf3;
 }
@@ -124,7 +124,7 @@ body {
 .page-container-full {
   width: 100%;
   padding: 2.75rem 2.25rem;
-  height: 90.5vh;
+  height: 89.7vh;
   overflow-y: scroll;
   background: #f2edf3;
 }

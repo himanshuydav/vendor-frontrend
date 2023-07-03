@@ -6,7 +6,7 @@ const SIDEBAR_UL = [
         ref: 'dash',
         activelogo: <i className="mdi mdi-home menu-icon" />,
         nonactivelogo: "",
-        path: '/staff-dashboard'
+        path: '/'
     },
 
     {

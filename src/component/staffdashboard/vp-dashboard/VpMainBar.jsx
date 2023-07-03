@@ -5,21 +5,22 @@ import VendorView from "../../common/VendorView";
 import Contractpage from "../../../pages/Contractpage";
 import CreateInvoice from "../../../pages/vendor/CreateInvoice";
 import ApprovalFlow from "../../../pages/superadmin/ApprovalFlow";
-import ManegerHome from "../../../pages/staff/admin-manger/ManegerHome";
+import VpDashBoard from "../../../pages/staff/vp/VpDashBoard";
+import VpListing from "../../../pages/staff/vp/VpListing";
 
-const ManagerMainBar = () => {
+const VpMainBar = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<ManegerHome />} />
+        <Route path="/" element={<VpDashBoard />} />
         <Route path="/manager-view/:id" element={<VendorView />} />
-        <Route path="/contract-list" element={<ExcuvtiveDashboard />} />
+        <Route path="/contract-list" element={<VpListing />} />
         <Route path="/add-manager-contract" element={<Contractpage />} />
         <Route path="/add-invoice/:id" element={<CreateInvoice/>} />
-        <Route path="/approval-flow" element={<ApprovalFlow/>} />
+        {/* <Route path="/approval-flow" element={<ApprovalFlow/>} /> */}
       </Routes>
     </div>
   );
 };
 
-export default ManagerMainBar;
+export default VpMainBar;

@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminManager from './staffdashboard/admin-manegerdashboard';
 import { ModalContext } from '../Context';
 import CommonModal from './CommonModal';
+import AdminVpOpration from './staffdashboard/vp-dashboard';
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,7 +77,7 @@ const App = () => {
           :
           user?.role === "Staff" && user?.roles[0]?.RoleName === "VP Operations"
           ?
-          <Route path="/*" element={<AdminManager />} />
+          <Route path="/*" element={<AdminVpOpration />} />
           :
           <Route path="/login" element={<LoginScreen />} />
           }

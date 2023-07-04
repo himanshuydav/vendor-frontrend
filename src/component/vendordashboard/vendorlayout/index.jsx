@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Header from '../../staffdashboard/layout/Header'
 import VendorSidebar from './VenderSidenav'
 import VendorMainBar from './VendorMainBar'
+import VendorHeader from './VendorHeader'
 
 
 const VendorLayout = () => {
@@ -10,7 +10,7 @@ const VendorLayout = () => {
 
   return (
     <div>
-        <Header  setTogglerBar={setTogglerBar}  togglerBar={togglerBar}  />
+        <VendorHeader  setTogglerBar={setTogglerBar}  togglerBar={togglerBar}  />
          <div className="Layout d-flex ">
             <div className="side-nav"> 
                 <VendorSidebar />

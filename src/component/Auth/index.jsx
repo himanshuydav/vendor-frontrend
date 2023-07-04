@@ -128,7 +128,7 @@ const LoginComp = () => {
       }
   
      if (user?.role === "Vendor") {
-      navigate("/vendor-dashboard");
+        navigate("/vendor-dashboard");
      }
 
     if (user?.role === "Staff") {

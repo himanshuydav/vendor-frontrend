@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import Icon from "@mdi/react";
-import { mdiFileDocumentEditOutline, mdiReceiptText } from '@mdi/js';
+import {mdiEye, mdiReceiptText } from '@mdi/js';
 import { useNavigate } from "react-router-dom";
 import { ModalContext } from "../../Context";
 import Approve from "../../modals/Approve";
@@ -82,7 +82,7 @@ const ExcuitveTables = ({search,excutiveLists}) => {
                       <td className='text-center'>{item?.Name}</td>
                       <td style={{ textAlign: "center" }} >
                       <div className="cursor-pointer d-flex justify-content-center">
-                         <Icon path={mdiFileDocumentEditOutline} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
+                         <Icon path={mdiEye} size={1} style={{ marginRight: '6px' }} onClick={() => handleViewVendorDetails(item.id)} />
                           {
                           item?.Status === 2 && <Icon path={mdiReceiptText} size={1} style={{ marginRight: '6px', color: "black" }} onClick={() => handleInvoiceClick(item.id)} />
 

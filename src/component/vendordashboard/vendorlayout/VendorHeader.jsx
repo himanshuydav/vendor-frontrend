@@ -7,8 +7,8 @@ import {useNavigate } from 'react-router-dom';
 
 
 
-const Header = ({ setTogglerBar,togglerBar }) => {
-  const user = JSON.parse(localStorage.getItem('user'))
+const VendorHeader = ({ setTogglerBar,togglerBar }) => {
+     const user = JSON.parse(localStorage.getItem('user'))
      const navigate = useNavigate()
      const dispatch = useDispatch()
 
@@ -46,7 +46,7 @@ const Header = ({ setTogglerBar,togglerBar }) => {
 
         <ul className="navbar-nav navbar-nav-right">
           <li className="nav-item nav-logout d-flex align-items-center px-4">
-            <p className='mx-2 user-name'>{user?.roles[0]?.RoleName || "Vendor"}</p>
+            <p className='mx-2 user-name'> Vendor</p>
             <button className="nav-link" onClick={()=>handlelogout()}>
               <i className="mdi mdi-power"></i>
             </button>
@@ -65,4 +65,4 @@ const Header = ({ setTogglerBar,togglerBar }) => {
     )
 }
 
-export default Header
+export default VendorHeader

@@ -62,7 +62,6 @@ const App = () => {
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
         <Route exact path="/login" element={<LoginScreen />} />
-
           {
           user?.role === "Vendor" ? 
             <Route path="/*" element={<VendorLayout />}/>

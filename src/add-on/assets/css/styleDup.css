@@ -1,0 +1,313 @@
+/* button{
+    background: #44a6f0 !important;
+} */
+
+/* primary button */
+.btn-gradient-primary {
+  background: #44a6f0 !important;
+}
+
+
+/* login page form */
+.auth .auth-form-light {
+  background: linear-gradient(
+    112.1deg,
+    rgb(32, 38, 57) 11.4%,
+    rgb(63, 76, 119) 70.2%
+  );
+}
+
+
+/* forget password login form */
+.auth form .auth-link {
+  color: white !important;
+
+}
+
+.auth form .form-group .form-control {
+  color: white;
+}
+.auth .brand-logo img {
+  width: 186px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+/* 
+.background {
+  background: url('../../assets/images/streamlogo1.png');
+  background-repeat: no-repeat;
+  /* background-size: contain; 
+  margin-top: -10%;
+
+} */
+
+.login-screen{
+  background: url('../../assets/images/HR_background3.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center 0%;
+  
+}
+.buttons-csv{
+  float: right;
+  background-color: #039935;
+  border: 1px solid #039935;
+  color: #fff;
+  font-size: 20px;
+  padding: 4px 10px;
+}
+
+.mx-auto {
+  margin-right: auto !important;
+  margin-left: unset !important;
+}
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl {
+  padding-left: 0px !important;
+}
+
+#myTable_wrapper {
+  margin-top: 10px !important;
+}
+#example_wrapper {
+  margin-top: 10px !important;
+}
+#leaveType_wrapper {
+  margin-top: 10px !important;
+}
+#lateAttendance_wrapper {
+  margin-top: 10px !important;
+}
+#leaveHistory_wrapper {
+  margin-top: 10px !important;
+}
+#myatTable_wrapper{
+  
+  margin-top: 10px !important;
+}
+
+div.dataTables_wrapper div.dataTables_length select{
+  width: 42% !important;
+}
+.sidebar {
+  background: linear-gradient(
+    112.1deg,
+    rgb(32, 38, 57) 11.4%,
+    rgb(63, 76, 119) 70.2%
+  );
+  color: white;
+}
+
+.navbar {
+  background: linear-gradient(
+    112.1deg,
+    rgb(32, 38, 57) 11.4%,
+    rgb(63, 76, 119) 70.2%
+  );
+}
+
+.navbar .navbar-brand-wrapper {
+  background: transparent;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.text-black {
+  color: white !important;
+}
+
+.navbar-toggler {
+  background: transparent !important;
+}
+
+.mdi-eye {
+  color: black;
+}
+
+.mdi-delete {
+  color: red;
+}
+
+
+
+.sidebar .nav .nav-item.active > .nav-link .menu-title {
+  color: #44a6f0 !important;
+}
+
+.sidebar .nav :hover .sub-menu .nav-item .nav-link {
+  color: black !important;
+}
+
+.sidebar .nav :hover span {
+  color: black !important;
+}
+
+.sidebar .nav .nav-item.active > .nav-link i {
+  color: #44a6f0;
+}
+
+#upLeave{
+  background-color: #8cab9f !important;
+}
+#PendingLea{
+background-color: #2296d3 !important;
+}
+#leaveBal{
+background-color: #f3ab1a !important;
+}
+/* 
+  .page-item .page-link {
+    background: linear-gradient(112.1deg, rgb(61 66 84) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: white;
+
+  }
+
+  .page-item .page-link :hover {
+    color: white;
+
+  }
+
+
+  .paginate_button.active .page-link {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 5px 5px #ffffff !important;
+  }
+
+  .page-link:hover
+  {
+        border-color: #ffffff !important;
+    box-shadow: 0 0 5px 5px #ffffff !important;
+    color: #ffffff !important;
+  }
+   */
+
+.sidebar .nav .nav-item.active {
+  background: white;
+}
+
+.sidebar .nav .nav-item.active .nav-link {
+  color: grey !important;
+}
+
+/* 
+  #myTable{
+    background: linear-gradient(112.1deg, rgb(61 66 84) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: white;
+  }
+
+  #example{
+    background: linear-gradient(112.1deg, rgb(61 66 84) 11.4%, rgb(63, 76, 119) 70.2%);
+    color: white;
+  } */
+
+.mdi-grease-pencil {
+  font-size: 1.2em;
+
+  color: #6ada6a;
+}
+/* 
+
+  .card ~ .card{
+    background: linear-gradient(112.1deg, rgb(68 75 102) 11.4%, rgb(117 126 166) 70.2%) !important;
+  } */
+
+/* div.card:first-child{
+    background-color: rgb(141, 146, 170) !important;;
+  } */
+
+/* 
+  div.dataTables_wrapper div.dataTables_filter input {
+    background: linear-gradient(112.1deg, rgb(61 66 84) 11.4%, rgb(63, 76, 119) 70.2%) !important;
+    color: white;
+  }
+
+  div.dataTables_wrapper div.dataTables_length select{
+    background: linear-gradient(112.1deg, rgb(61 66 84) 11.4%, rgb(63, 76, 119) 70.2%) !important;
+    color: white;
+  }
+  div.dataTables_wrapper div.dataTables_length select>option{
+    background: rgb(63, 76, 119);
+    color: white;
+  } */
+
+
+  .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown {
+    background: linear-gradient(112.1deg, rgb(68 75 102) 11.4%, rgb(117 126 166) 70.2%) !important;
+    
+  }
+
+
+  .dropdown .dropdown-menu .dropdown-item:hover {
+    color: grey;
+  }
+
+
+  .fa, .far, .fas {
+    color: white !important;
+  }
+
+  .eye-div {
+    background-color: rgb(50, 58, 85);
+  }
+
+
+  .fab, .far{
+    color: black;
+  }
+
+  .sidebar .nav.sub-menu .nav-item .nav-link.active {
+    color: #44a6f0 !important;
+    font-weight: bold;
+  }
+
+
+  .navbar .navbar-menu-wrapper .navbar-nav .nav-item.dropdown .dropdown-menu.navbar-dropdown .dropdown-item {
+    color: #ffffff;
+  }
+
+  .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img {
+    border-radius: 12px;
+    height: 23px;
+  }
+
+  #captchast{
+    width: 104%;
+  }
+
+
+  .table-responsive{
+    overflow-y: hidden !important;
+  }
+
+  .sidebar {
+    position: fixed;
+  }
+
+  .main-panel{
+    position: absolute;
+    right: 0;
+  }
+
+  .mdi{
+    margin-left: unset !important;
+  }
+
+.menu-title {
+  margin-left: 12%;
+}
+
+.sidebar .nav.sub-menu {
+margin-left: 18%;
+}
+
+.termi{
+
+  background-color: #ffd6d6 !important;
+}

@@ -27,7 +27,7 @@ import {
 } from "./routes";
 
 // export const BASE_URL = "http://localhost:3001"; //devlopment//
-export const BASE_URL = 'http://vendorportalstreams.us-east-1.elasticbeanstalk.com' //production//
+export const BASE_URL = 'https://vendorportalstreams.us-east-1.elasticbeanstalk.com' //production//
 
 axios.defaults.baseURL = BASE_URL;
 

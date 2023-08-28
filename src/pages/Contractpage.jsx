@@ -386,6 +386,7 @@ const Contractpage = () => {
                   min={currentDate}
                   value={formState.startDate}
                   onChange={handleInputChange}
+                  onKeyDown={(e) => e.preventDefault()}
                 />
 
                 {errors.startDate && (
@@ -408,6 +409,7 @@ const Contractpage = () => {
                   value={formState.endDate}
                   onChange={handleInputChange}
                   disabled={isDisabled}
+                  onKeyDown={(e) => e.preventDefault()}
                 />
 
                 {errors.endDate && (

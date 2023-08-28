@@ -52,12 +52,13 @@ const RejectByLevelContract = ({ item, handleVendorList, levelData }) => {
     });
     console.log(result);
   };
+  
 
   useEffect(() => {
     if (user?.transactions[2]?.id && user?.roles[0].id) {
       handleRejectlist();
     }
-  }, []);
+  },[]);
 
   const onOptionChangeHandler = (event) => {
     setLevelValue(event.target.value);

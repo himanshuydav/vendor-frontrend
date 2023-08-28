@@ -104,7 +104,7 @@ const SuperAdminDashboard = () => {
          
           
           {
-            Header: <div className='text-center pe-5'>Status</div>,
+            Header: <div className='ps-5'>Status</div>,
             accessor: "StatusName",
             Cell: ({ row }) => {
                 return (

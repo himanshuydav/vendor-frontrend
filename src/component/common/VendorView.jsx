@@ -103,11 +103,7 @@ const VendorView = () => {
                         <span className="col-md-4">{VendorItem?.Term}</span>
                       </div>
 
-                      <div className="col-md-6 d-flex mb-3">
-                        <h6 className="col-md-4">Status</h6>
-                        <span className="col-md-2">:</span>
-                        <span className="col-md-4">{VendorItem?.StatusName}</span>
-                      </div>
+                      
 
                       <div className="col-md-6 d-flex mb-3">
                         <h6 className="col-md-4">Subsidiary</h6>
@@ -115,34 +111,40 @@ const VendorView = () => {
                         <span className="col-md-4">{VendorItem?.Subsidiary}</span>
                       </div>
 
-                      <div className="col-md-6 d-flex mb-3">
-                        <h6 className="col-md-4">Rejection Reason</h6>
-                        <span className="col-md-2">:</span>
-                        <span className="col-md-4">{VendorItem?.RejectionReason ? VendorItem.RejectionReason : 'N/A'}</span>
-                      </div>
+                    
 
                       <div className="col-md-6 d-flex mb-3">
                         <h6 className="col-md-4">Start Date</h6>
                         <span className="col-md-2">:</span>
-                        <span className="col-md-4">{moment(VendorItem?.StartDate).format()?.slice(0, 10)}</span>
+                        <span className="col-md-4">{moment(VendorItem?.StartDate).format('D/MM/YYYY')?.slice(0, 10)}</span>
                       </div>
 
                       <div className="col-md-6 d-flex mb-3">
                         <h6 className="col-md-4">Created At</h6>
                         <span className="col-md-2">:</span>
-                        <span className="col-md-4">{moment(VendorItem?.CreatedAt).format()?.slice(0, 10)}</span>
+                        <span className="col-md-4">{moment(VendorItem?.CreatedAt).format('D/MM/YYYY')?.slice(0, 10)}</span>
                       </div>
 
                       <div className="col-md-6 d-flex mb-3">
                         <h6 className="col-md-4">End Date</h6>
                         <span className="col-md-2">:</span>
-                        <span className="col-md-4">{moment(VendorItem?.EndDate).format()?.slice(0, 10)}</span>
+                        <span className="col-md-4">{moment(VendorItem?.EndDate).format('D/MM/YYYY')?.slice(0, 10)}</span>
+                      </div>
+                      <div className="col-md-6 d-flex mb-3">
+                        <h6 className="col-md-4">Status</h6>
+                        <span className="col-md-2">:</span>
+                        <span className="col-md-4">{VendorItem?.StatusName}</span>
                       </div>
 
                       <div className="col-md-6 d-flex mb-3">
                         <h6 className="col-md-4">Total</h6>
                         <span className="col-md-2">:</span>
                         <span className="col-md-4">{`INR ${VendorItem?.ContractTotal?.toFixed(2)}`}</span>
+                      </div>
+                      <div className="col-md-6 d-flex mb-3">
+                        <h6 className="col-md-4">Rejection Reason</h6>
+                        <span className="col-md-2">:</span>
+                        <span className="col-md-4">{VendorItem?.RejectionReason ? VendorItem.RejectionReason : 'N/A'}</span>
                       </div>
 
                     </div>
@@ -153,20 +155,20 @@ const VendorView = () => {
                         <thead>
                           <tr>
 
-                            <th className="text-right">Item</th>
-                            <th className="text-left">Rate</th>
-                            <th className="text-left">Quantity</th>
-                            <th className="text-left">Amount</th>
+                            <th className="text-left">Item</th>
+                            <th className="text-end">Rate</th>
+                            <th className="text-end">Quantity</th>
+                            <th className="text-end">Amount</th>
                           </tr>
                         </thead>
                         <tbody>
 
                           {VendorItem?.lineItems?.map((row, index) => (
                             <tr key={index}>
-                              <td className="text-right">{row.ItemName}</td>
-                              <td className="text-left">INR {row?.Rate?.toFixed(2)}</td>
-                              <td className="text-left">{row?.Quantity?.toFixed(2)}</td>
-                              <td className="text-left">INR {row?.Amount?.toFixed(2)}</td>
+                              <td className="text-left">{row.ItemName}</td>
+                              <td className="text-end">INR {row?.Rate?.toFixed(2)}</td>
+                              <td className="text-end">{row?.Quantity?.toFixed(2)}</td>
+                              <td className="text-end">INR {row?.Amount?.toFixed(2)}</td>
                             </tr>
                           ))}
 
@@ -181,9 +183,8 @@ const VendorView = () => {
                         <thead>
                           <tr>
                             <th className="text-left">File Name</th>
-                            <th className="text-left">File Type</th>
-                            <th className="text-left">Time</th>
-                            <th className="text-left">Action</th>
+                            <th className="text-center">File Type</th>
+                            <th className="text-center">Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -192,9 +193,8 @@ const VendorView = () => {
                           {VendorItem?.files?.map((row, index) => (
                             <tr key={index}>
                               <td className="text-left">{row.FileName}</td>
-                              <td className="text-left">Pdf</td>
-                              <td className="text-left">12 Jan 2023, 11:49:42 am</td>
-                              <td className="text-left">
+                              <td className="text-center">Pdf</td>
+                              <td className="text-center">
                                 <a
                                   href={`${BASE_URL}/file/contract/${row.FileId}`}
                                 >

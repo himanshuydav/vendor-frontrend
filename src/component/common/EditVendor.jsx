@@ -10,6 +10,9 @@ import { FaTrash } from "react-icons/fa";
 import downloadicon from "../../assets/images/download.png"
 import { async } from "q";
 import Spinner from "./Spinner";
+import { toast } from "react-hot-toast";
+
+
 
 
 const EditVendor = () => {
@@ -102,6 +105,7 @@ const EditVendor = () => {
 
     const handleLineItemChange = (index, field, value) => {
         const updatedLineItems = [...lineItems];
+        // console.log("copy of line items before", updatedLineItems)
 
         let newValue;
         if (field === "Quantity") {
@@ -126,12 +130,11 @@ const EditVendor = () => {
         updatedLineItems[index][field] = newValue;
 
         updatedLineItems.forEach((row) => {
-            // row.Amount = (row.Quantity * row.Rate).toFixed(2);
             row.Amount = isNaN(row.Quantity) || isNaN(row.Rate) ? "" : (row.Quantity * row.Rate).toFixed(2);
         });
 
         setLineItems(updatedLineItems);
-        // console.log(updatedLineItems)
+        // console.log("copy of line items after", updatedLineItems)
     };
 
     const handleRemoveItem = (index, event) => {
@@ -143,11 +146,14 @@ const EditVendor = () => {
         }
 
         const updatedLineItems = [...lineItems];
-        const deletedRowId = updatedLineItems[index].id;
-        console.log("hi", deletedRowId)
-        updatedLineItems.splice(index, 1);
+        // console.log("copy of line items before", updatedLineItems)
 
+        const deletedRowId = updatedLineItems[index].id;
+        console.log("deleted row is", deletedRowId)
+        updatedLineItems.splice(index, 1);
+        // console.log("copy of line items after", updatedLineItems)
         setLineItems(updatedLineItems);
+
         setDeletedRowIds((prevDeletedIds) => [...prevDeletedIds, deletedRowId]);
     };
 
@@ -155,21 +161,20 @@ const EditVendor = () => {
 
         const newItem = {
             id: "",
-            itemId: "",
-            rate: "",
-            quantity: "",
-            amount: "",
+            ItemId: "",
+            Rate: "",
+            Quantity: "",
+            Amount: "",
 
         };
 
         const updatedLineItems = [...lineItems, newItem];
         setLineItems(updatedLineItems);
-        console.log("hi", updatedLineItems)
     };
 
-    const handleRemoveFile = (index) => {
+    const handleRemoveFile = (index, event) => {
 
-
+        event.preventDefault();
         const updatedFiles = [...Files];
         const deletedFileId = updatedFiles[index].FileId;
         console.log("hi", deletedFileId)
@@ -249,6 +254,7 @@ const EditVendor = () => {
             // }
 
             const result = await EditContractForm(formData);
+            toast.success('Updated Successfully')
             navigate("/contract-listing");
         } catch (error) {
             console.log(error);
@@ -456,7 +462,6 @@ const EditVendor = () => {
                                                 <tr>
                                                     <th className="text-left">File Name</th>
                                                     <th className="text-left">File Type</th>
-                                                    <th className="text-left">Time</th>
                                                     <th className="text-left">Action</th>
                                                 </tr>
                                             </thead>
@@ -465,7 +470,6 @@ const EditVendor = () => {
                                                     <tr key={index}>
                                                         <td className="text-left">{row.FileName}</td>
                                                         <td className="text-left">Pdf</td>
-                                                        <td className="text-left">12 Jan 2023, 11:49:42 am</td>
                                                         <td className="text-left d-flex align-items-center">
                                                             <a
                                                                 href={`${BASE_URL}/file/contract/${row.FileId}`}
@@ -474,7 +478,7 @@ const EditVendor = () => {
 
                                                             </a>
                                                             <div className="ms-2">
-                                                                <button className="btn btn-sm" onClick={() => handleRemoveFile(index)}>
+                                                                <button className="btn btn-sm" onClick={(e) => handleRemoveFile(index, e)}>
                                                                     <FaTrash size={20} />
                                                                 </button>
                                                             </div>

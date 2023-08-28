@@ -10,7 +10,7 @@ const CreateInvoice = () => {
   const { id } = useParams();
   const [InvoiceItem, setInvoiceItems] = useState({});
   const [finalTotalAmount, setFinalTotalAmount] = useState("");
-  const [loader,setLoader] =useState(false)
+  const [loader, setLoader] = useState(false)
   const user = JSON.parse(localStorage.getItem("user"));
   const [data, setData] = useState({
     cgst: '',
@@ -31,18 +31,28 @@ const CreateInvoice = () => {
   const [fileError, setFileError] = useState(false);
 
 
-  const [dueDate, setDueDate] = useState('');
-  const [dueDateError, setDueDateError] = useState(false);
+  const [billDate, setBillDate] = useState('');
+  // const [dueDateError, setDueDateError] = useState(false);
 
+
+
+  const handleDueDateChange = (event) => {
+    const newDueDate = event.target.value;
+    console.log("date is", newDueDate)
+    setInvoiceItems({
+      ...InvoiceItem,
+      dueDate: newDueDate
+    });
+  }
 
   const handleDateChange = (event) => {
     const date = event.target.value;
-    setDueDate(date);
-    setDueDateError(false)
+    setBillDate(date);
+    // setDueDateError(false)
   };
 
   const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + 1);
+  currentDate.setDate(currentDate.getDate());
   const newDate = currentDate.toISOString().split('T')[0];
 
   const handleReferenceChange = (event) => {
@@ -115,8 +125,17 @@ const CreateInvoice = () => {
   const fetchData = async () => {
     setLoader(true)
     const result = await getInvoice(id);
+    const Term = result.res.term.replace(/\D/g, '');
+ 
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + parseInt(Term));
     setLoader(false)
-    setInvoiceItems(result.res);
+   
+    setInvoiceItems({
+      ...result.res,
+      dueDate: dueDate.toISOString().split("T")[0],
+    });
+
   };
 
   useEffect(() => {
@@ -171,10 +190,10 @@ const CreateInvoice = () => {
       }
     }
 
-    if (!dueDate) {
-      setDueDateError(true);
-      return;
-    }
+    // if (!billDate) {
+    //   setDueDateError(true);
+    //   return;
+    // }
 
     if (parseFloat(finalTotalAmount) === 0) {
       setSubtotalError(true);
@@ -191,10 +210,6 @@ const CreateInvoice = () => {
       return;
     }
 
-    // if (user.role === "Vendor") {
-    // }
-
-
     else {
 
       const formData = new FormData();
@@ -209,7 +224,7 @@ const CreateInvoice = () => {
       formData.append("utgst", data.utgst);
       formData.append("taxSubTotal", data.taxSubTotal);
       formData.append("total", data.total);
-      formData.append("dueDate", dueDate);
+      formData.append("billDate", billDate);
       formData.append("refNo", referenceNo);
 
 
@@ -254,385 +269,405 @@ const CreateInvoice = () => {
       </button>
       {
         loader ?
-        <Spinner />
-        :
-        <>
-         <div className="card border-secondary mt-4">
-        <div className="card-header">
-          <h3>Bill</h3>
-        </div>
-
-        <div className="card-body">
-          <form>
-            <div className="row mb-3">
-              <div className="col-md-4">
-                <label htmlFor="vendor" className="form-label">
-                  Legal Name
-                </label>
-
-                <input
-                  type="text"
-                  name="vendor"
-                  id="vendor"
-                  value={InvoiceItem?.vendorName}
-                  className="form-control"
-                  disabled
-                />
+          <Spinner />
+          :
+          <>
+            <div className="card border-secondary mt-4">
+              <div className="card-header">
+                <h3>Bill</h3>
               </div>
 
-              <div className="col-md-4">
-                <label htmlFor="contractname" className="form-label">
-                  Purchase Contract
-                </label>
+              <div className="card-body">
+                <form>
+                  <div className="row mb-3">
+                    <div className="col-md-4">
+                      <label htmlFor="vendor" className="form-label">
+                        Legal Name
+                      </label>
 
-                <input
-                  type="text"
-                  id="contractname"
-                  value={InvoiceItem?.documentNo}
-                  className="form-control"
-                  name="contractname"
-                  disabled
-                />
-              </div>
+                      <input
+                        type="text"
+                        name="vendor"
+                        id="vendor"
+                        value={InvoiceItem?.vendorName}
+                        className="form-control"
+                        disabled
+                      />
+                    </div>
 
-              <div className="col-md-4">
-                <label htmlFor="refNo" className="form-label">
-                  Reference No.
-                </label>
+                    <div className="col-md-4">
+                      <label htmlFor="contractname" className="form-label">
+                        Purchase Contract
+                      </label>
 
-                <input
-                  type="text"
-                  id="refNo"
-                  placeholder="Please enter reference no."
-                  className="form-control"
-                  name="refNo"
-                  value={referenceNo}
-                  onChange={handleReferenceChange}
-                  autoComplete="off"
+                      <input
+                        type="text"
+                        id="contractname"
+                        value={InvoiceItem?.documentNo}
+                        className="form-control"
+                        name="contractname"
+                        disabled
+                      />
+                    </div>
 
-                />
-                {referenceError && (
-                  <div className="text-danger mt-1">Please provide a Reference No</div>
-                )}
-              </div>
-            </div>
+                    <div className="col-md-4">
+                      <label htmlFor="refNo" className="form-label">
+                        Reference No.
+                      </label>
 
-            <div className="row mb-4">
-              <div className="col-md-4">
-                <label htmlFor="pendingbill" className="form-label">
-                  Total
-                </label>
+                      <input
+                        type="text"
+                        id="refNo"
+                        placeholder="Please enter reference no."
+                        className="form-control"
+                        name="refNo"
+                        value={referenceNo}
+                        onChange={handleReferenceChange}
+                        autoComplete="off"
 
-                <input
-                  type="text"
-                  name="pendingbill"
-                  id="pendingbill"
-                  value={`INR ${InvoiceItem?.contractTotal?.toFixed(2)}`}
-                  className="form-control"
-                  disabled
-                />
-              </div>
+                      />
+                      {referenceError && (
+                        <div className="text-danger mt-1">Please provide a Reference No</div>
+                      )}
+                    </div>
+                  </div>
 
-              <div className="col-md-4">
-                <label htmlFor="totalbilled" className="form-label">
-                  Total Billed
-                </label>
+                  <div className="row mb-3">
+                    <div className="col-md-4">
+                      <label htmlFor="pendingbill" className="form-label">
+                        Total
+                      </label>
 
-                <input
-                  type="text"
-                  name="totalbilled"
-                  id="totalbilled"
-                  value={`INR ${InvoiceItem?.totalInvoicedAmount?.toFixed(2)}`}
-                  className="form-control"
-                  disabled
-                />
-              </div>
+                      <input
+                        type="text"
+                        name="pendingbill"
+                        id="pendingbill"
+                        value={`INR ${InvoiceItem?.contractTotal?.toFixed(2)}`}
+                        className="form-control"
+                        disabled
+                      />
+                    </div>
 
-              <div className="col-md-4">
-                <label htmlFor="dueDate" className="form-label">
-                  Due Date
-                </label>
+                    <div className="col-md-4">
+                      <label htmlFor="totalbilled" className="form-label">
+                        Total Billed
+                      </label>
 
-                <input
-                  type="date"
-                  name="dueDate"
-                  id="dueDate"
-                  value={dueDate}
-                  onChange={handleDateChange}
-                  className="form-control"
-                  min={newDate}
+                      <input
+                        type="text"
+                        name="totalbilled"
+                        id="totalbilled"
+                        value={`INR ${InvoiceItem?.totalInvoicedAmount?.toFixed(2)}`}
+                        className="form-control"
+                        disabled
+                      />
+                    </div>
 
-                />
-                {dueDateError && (
-                  <div className="text-danger mt-1">Please select Due Date</div>
-                )}
-              </div>
-            </div>
+                    <div className="col-md-4">
+                      <label htmlFor="billDate" className="form-label">
+                        Bill Date
+                      </label>
 
-            <div className="perchase-terms-tabel table-responsive mb-4">
-              <h5 className="mb-3">Items</h5>
+                      <input
+                        type="date"
+                        name="billDate"
+                        id="billDate"
+                        value={billDate}
+                        onChange={handleDateChange}
+                        className="form-control"
+                        min={newDate}
 
-              <table className="table table-bordered table-striped">
-                <thead>
-                  <tr>
-                    <th className="text-left">Item</th>
-                    <th className="text-end">Rate</th>
-                    <th className="text-end">Quantity</th>
-                    <th className="text-end">Amount</th>
-                  </tr>
-                </thead>
+                      />
+                      {/* {dueDateError && (
+                        <div className="text-danger mt-1">Please select Due Date</div>
+                      )} */}
+                    </div>
 
-                <tbody>
-                  {InvoiceItem?.lines?.map((row, index) => (
-                    <tr key={index}>
-                      <td style={{ width: "200px" }}>{row.itemName}</td>
-                      <td style={{ width: "200px" }} className="text-end">INR {row.rate?.toFixed(2)}</td>
+                  </div>
 
-                      <td style={{ width: "200px" }}>
+                  <div className="row mb-4">
+                    <div className="col-md-4">
+                      <label htmlFor="dueDate" className="form-label">
+                        Due Date
+                      </label>
+
+                      <input
+                        type="date"
+                        name="dueDate"
+                        id="dueDate"
+                        className="form-control"
+                        value={InvoiceItem?.dueDate}
+                        onChange={handleDueDateChange}
+                        min={InvoiceItem?.dueDate}
+
+                      />
+                    </div>
+                  </div>
+
+                  <div className="perchase-terms-tabel table-responsive mb-4">
+                    <h5 className="mb-3">Items</h5>
+
+                    <table className="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th className="text-left">Item</th>
+                          <th className="text-end">Rate</th>
+                          <th className="text-end">Quantity</th>
+                          <th className="text-end">Amount</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {InvoiceItem?.lines?.map((row, index) => (
+                          <tr key={index}>
+                            <td style={{ width: "200px" }}>{row.itemName}</td>
+                            <td style={{ width: "200px" }} className="text-end">INR {row.rate?.toFixed(2)}</td>
+
+                            <td style={{ width: "200px" }}>
+                              <input
+                                type="number"
+                                className="form-control text-end"
+                                name={`quantity_${index}`}
+                                value={row.quantity}
+                                onChange={(e) =>
+                                  handleQuantityChange(
+                                    index,
+                                    e.target.value,
+                                    row.remainingQunatity
+                                  )
+                                }
+                                placeholder={`max ${row.remainingQunatity}`}
+                                max={row.remainingQunatity}
+                                min={0}
+                                disabled={row.remainingQunatity == 0}
+                              />
+                            </td>
+
+                            <td style={{ width: "200px" }} className="text-end">{row.totalAmount && "INR "} {row.totalAmount}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="row mb-3">
+                    <div className="col-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center mt-4">
+                          <h6 className="px-4">Sub Total</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input className="form-control text-end" type="text" id="finalTotalAmount" value={`INR ${finalTotalAmount}`} disabled />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {subtotalError && (
+                    <div className="text-danger text-end px-4 mb-4">Subtotal can't be zero</div>
+                  )}
+
+                  <div className="row mb-3">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center">
+                          <h6 className="px-4">CGST%</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input
+                              type="text"
+                              className="form-control text-end"
+                              id="cgst"
+                              name="cgst"
+                              value={data.cgst}
+                              onChange={handleChange}
+                              disabled={data.utgst || data.igst}
+                              autoComplete="off"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center">
+                          <h6 className="px-4">SGST%</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input
+                              type="text"
+                              className="form-control text-end"
+                              id="sgst"
+                              name="sgst"
+                              value={data.sgst}
+                              onChange={handleChange}
+                              disabled={data.utgst || data.igst}
+                              autoComplete="off"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center">
+                          <h6 className="px-4">UTGST%</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input
+                              type="text"
+                              className="form-control text-end"
+                              id="utgst"
+                              name="utgst"
+                              value={data.utgst}
+                              onChange={handleChange}
+                              disabled={data.cgst || data.sgst || data.igst}
+                              autoComplete="off"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row mb-4">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center">
+                          <h6 className="px-4">IGST%</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input
+                              type="text"
+                              className="form-control text-end"
+                              id="igst"
+                              name="igst"
+                              value={data.igst}
+                              onChange={handleChange}
+                              disabled={data.cgst || data.sgst || data.utgst}
+                              autoComplete="off"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {taxError && (
+                    <div className="text-danger text-end px-4 mb-4">
+                      One of the GST Field is required
+                    </div>
+                  )}
+
+                  <div className="row mb-4">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center">
+                          <h6 className="px-4">GST Total</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input
+                              type="text"
+                              className="form-control text-end"
+                              id="taxSubTotal"
+                              name="taxSubTotal"
+                              value={`INR ${data.taxSubTotal}`}
+                              // onChange={handleChange}
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row mb-4">
+                    <div className="col-md-12">
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex align-items-center">
+                          <h6 className="px-4">Total</h6>
+                          <span>:</span>
+                          <div className="px-4">
+                            <input
+                              type="text"
+                              className="form-control text-end"
+                              id="total"
+                              name="total"
+                              value={`INR ${data.total}`}
+                              // onChange={handleChange}
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row mb-3">
+                    <div className="col-md-12">
+                      <input
+                        type="checkbox"
+                        id="attachDocuments"
+                        className="form-check-input"
+                        name="attachDocuments"
+                        checked={attachDocuments}
+                        onChange={(e) => setAttachDocuments(e.target.checked)}
+                      />
+
+                      <label
+                        htmlFor="attachDocuments"
+                        className="form-check-label ms-2"
+                      >
+                        Check for attach documents
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="row mb-4">
+                    <div className="col-md-4">
+                      <div className="input-group">
                         <input
-                          type="number"
-                          className="form-control text-end"
-                          name={`quantity_${index}`}
-                          value={row.quantity}
-                          onChange={(e) =>
-                            handleQuantityChange(
-                              index,
-                              e.target.value,
-                              row.remainingQunatity
-                            )
-                          }
-                          placeholder={`max ${row.remainingQunatity} `}
-                          max={row.remainingQunatity}
-                          min={0}
-                          disabled={row.remainingQunatity == 0}
+                          type="file"
+                          accept=".pdf"
+                          className="form-control"
+                          disabled={!attachDocuments}
+                          onChange={handleFileInputChange}
+                          multiple
                         />
-                      </td>
+                      </div>
 
-                      <td style={{ width: "200px" }} className="text-end">{row.totalAmount && "INR "} {row.totalAmount}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="row mb-3">
-              <div className="col-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center mt-4">
-                    <h6 className="px-4">Sub Total</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input className="form-control text-end" type="text" id="finalTotalAmount" value={`INR ${finalTotalAmount}`} disabled />
+                      {fileError && (
+                        <div className="text-danger mt-1">
+                          Please attach a PDF file (upto 2MB)
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            {subtotalError && (
-              <div className="text-danger text-end px-4 mb-4">Subtotal can't be zero</div>
-            )}
-
-            <div className="row mb-3">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <h6 className="px-4">CGST%</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input
-                        type="text"
-                        className="form-control text-end"
-                        id="cgst"
-                        name="cgst"
-                        value={data.cgst}
-                        onChange={handleChange}
-                        disabled={data.utgst || data.igst}
-                        autoComplete="off"
-                      />
+                  <div className="row mb-3">
+                    <div className="col-md-12">
+                      <button
+                        type="submit"
+                        className="btn btn-success float-end"
+                        onClick={(e) => handleSubmit(e)}
+                      >
+                        Submit
+                      </button>
                     </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
-
-            <div className="row mb-3">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <h6 className="px-4">SGST%</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input
-                        type="text"
-                        className="form-control text-end"
-                        id="sgst"
-                        name="sgst"
-                        value={data.sgst}
-                        onChange={handleChange}
-                        disabled={data.utgst || data.igst}
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row mb-3">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <h6 className="px-4">UTGST%</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input
-                        type="text"
-                        className="form-control text-end"
-                        id="utgst"
-                        name="utgst"
-                        value={data.utgst}
-                        onChange={handleChange}
-                        disabled={data.cgst || data.sgst || data.igst}
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row mb-4">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <h6 className="px-4">IGST%</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input
-                        type="text"
-                        className="form-control text-end"
-                        id="igst"
-                        name="igst"
-                        value={data.igst}
-                        onChange={handleChange}
-                        disabled={data.cgst || data.sgst || data.utgst}
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {taxError && (
-              <div className="text-danger text-end px-4 mb-4">
-                One of the GST Field is required
-              </div>
-            )}
-
-            <div className="row mb-4">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <h6 className="px-4">GST Total</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input
-                        type="text"
-                        className="form-control text-end"
-                        id="taxSubTotal"
-                        name="taxSubTotal"
-                        value={`INR ${data.taxSubTotal}`}
-                        // onChange={handleChange}
-                        disabled
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row mb-4">
-              <div className="col-md-12">
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <h6 className="px-4">Total</h6>
-                    <span>:</span>
-                    <div className="px-4">
-                      <input
-                        type="text"
-                        className="form-control text-end"
-                        id="total"
-                        name="total"
-                        value={`INR ${data.total}`}
-                        // onChange={handleChange}
-                        disabled
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="row mb-3">
-              <div className="col-md-12">
-                <input
-                  type="checkbox"
-                  id="attachDocuments"
-                  className="form-check-input"
-                  name="attachDocuments"
-                  checked={attachDocuments}
-                  onChange={(e) => setAttachDocuments(e.target.checked)}
-                />
-
-                <label
-                  htmlFor="attachDocuments"
-                  className="form-check-label ms-2"
-                >
-                  Check for attach documents
-                </label>
-              </div>
-            </div>
-
-            <div className="row mb-4">
-              <div className="col-md-4">
-                <div className="input-group">
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    className="form-control"
-                    disabled={!attachDocuments}
-                    onChange={handleFileInputChange}
-                    multiple
-                  />
-                </div>
-
-                {fileError && (
-                  <div className="text-danger">
-                    Please attach a PDF file (upto 2MB)
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="row mb-3">
-              <div className="col-md-12">
-                <button
-                  type="submit"
-                  className="btn btn-success float-end"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-        </>
+          </>
       }
-     
+
     </>
   );
 };

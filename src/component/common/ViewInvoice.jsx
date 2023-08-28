@@ -111,11 +111,11 @@ const ViewInvoice = () => {
                                     </div>
                                     <div className='d-flex justify-content-between'>
                                         <h5 className='px-3'>Date:</h5>
-                                        <p> {moment(ViewItem?.CreatedDate).format()?.slice(0, 10)}</p>
+                                        <p> {moment(ViewItem?.CreatedDate).format('D/MM/YYYY')?.slice(0, 10)}</p>
                                     </div>
                                     <div className='d-flex justify-content-between'>
                                         <h5 className='px-3'>Due Date:</h5>
-                                        <p> {moment(ViewItem?.DueDate).format()?.slice(0, 10)}</p>
+                                        <p> {moment(ViewItem?.DueDate).format('D/MM/YYYY')?.slice(0, 10)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -128,19 +128,19 @@ const ViewInvoice = () => {
                                         <thead>
                                             <tr>
                                                 <th className="text-left">Item</th>
-                                                <th className="text-right">Rate</th>
-                                                <th className="text-right">Quantity</th>
-                                                <th className="text-right">Amount</th>
+                                                <th className="text-end">Rate</th>
+                                                <th className="text-end">Quantity</th>
+                                                <th className="text-end">Amount</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody> 
 
                                             {ViewItem?.lineItems?.map((row, index) => (
                                                 <tr key={index}>
                                                     <td className="text-left">{row.ItemName}</td>
-                                                    <td className="text-right">INR {row?.Rate?.toFixed(2)}</td>
-                                                    <td className="text-right"> {row?.Quantity?.toFixed(2)}</td>
-                                                    <td className="text-right">INR {row?.Amount?.toFixed(2)}</td>
+                                                    <td className="text-end">INR {row?.Rate?.toFixed(2)}</td>
+                                                    <td className="text-end"> {row?.Quantity?.toFixed(2)}</td>
+                                                    <td className="text-end">INR {row?.Amount?.toFixed(2)}</td>
                                                 </tr>
                                             ))}
 
@@ -155,9 +155,8 @@ const ViewInvoice = () => {
                                         <thead>
                                             <tr>
                                                 <th className="text-left">File Name</th>
-                                                <th className="text-right">File Type</th>
-                                                <th className="text-right">Time</th>
-                                                <th className="text-right">Action</th>
+                                                <th className="text-center">File Type</th>
+                                                <th className="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -165,9 +164,8 @@ const ViewInvoice = () => {
                                             {ViewItem?.files?.map((row, index) => (
                                                 <tr key={index}>
                                                     <td className="text-left">{row.FileName}</td>
-                                                    <td className="text-left">Pdf</td>
-                                                    <td className="text-left">12 Jan 2023, 11:49:42 am</td>
-                                                    <td className="text-left">
+                                                    <td className="text-center">Pdf</td>
+                                                    <td className="text-center">
                                                         <a
                                                             href={`${BASE_URL}/file/invoice/${row.FileId}`}
                                                         >
@@ -226,7 +224,7 @@ const ViewInvoice = () => {
                                         {ViewItem?.TDSAmount && (
                                             <div className='view-footer-detail d-flex justify-content-between mt-2 '>
                                                 <h5 className='px-3'>TDS Amount:</h5>
-                                                <p> INR {ViewItem?.TDSAmount?.toFixed(2)}</p>
+                                                <p> {ViewItem?.TDSAmount}</p>
                                             </div>
                                         )}
 

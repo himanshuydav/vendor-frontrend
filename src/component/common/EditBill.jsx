@@ -8,6 +8,7 @@ import { FaTrash } from "react-icons/fa";
 import moment from "moment";
 import downloadicon from "../../assets/images/download.png"
 import Spinner from "./Spinner";
+import { toast } from "react-hot-toast";
 // import { async } from "q";
 
 
@@ -68,7 +69,7 @@ const EditBill = () => {
     }, [id]);
 
     const handleQuantityChange = (index, newQuantity, maxValue) => {
-      
+
 
         if (maxValue >= newQuantity) {
             const updatedLines = [...lineItems];
@@ -132,7 +133,8 @@ const EditBill = () => {
 
     }, [Cgst, Sgst, UTgst, Igst, InvoiceTotal]);
 
-    const handleRemoveFile = (index) => {
+    const handleRemoveFile = (index, event) => {
+        event.preventDefault();
 
         const updatedFiles = [...Files];
         const deletedFileId = updatedFiles[index].FileId;
@@ -142,7 +144,7 @@ const EditBill = () => {
 
         setFiles(updatedFiles);
         setDeletedFileIds((prevDeletedIds) => [...prevDeletedIds, deletedFileId]);
-     
+
     };
 
     const handleFileInputChange = (event) => {
@@ -196,6 +198,7 @@ const EditBill = () => {
             });
 
             const result = await EditBillForm(formData);
+            toast.success('Updated Successfully')
             navigate("/invoice-list");
         } catch (error) {
             console.log(error);
@@ -308,7 +311,6 @@ const EditBill = () => {
                                             value={DueDate}
                                             onChange={handleDueDateChange}
                                             min={formattedDate}
-
                                         />
                                     </div>
                                 </div>
@@ -515,7 +517,6 @@ const EditBill = () => {
                                             <tr>
                                                 <th className="text-left">File Name</th>
                                                 <th className="text-left">File Type</th>
-                                                <th className="text-left">Time</th>
                                                 <th className="text-left">Action</th>
                                             </tr>
                                         </thead>
@@ -525,7 +526,6 @@ const EditBill = () => {
                                                 <tr key={index}>
                                                     <td className="text-left">{row.FileName}</td>
                                                     <td className="text-left">Pdf</td>
-                                                    <td className="text-left">12 Jan 2023, 11:49:42 am</td>
                                                     <td className="text-left d-flex align-items-center">
                                                         <a
                                                             href={`${BASE_URL}/file/invoice/${row.FileId}`}
@@ -534,7 +534,7 @@ const EditBill = () => {
 
                                                         </a>
                                                         <div className="ms-2">
-                                                            <button className="btn btn-sm" onClick={() => handleRemoveFile(index)}>
+                                                            <button className="btn btn-sm" onClick={(e) => handleRemoveFile(index, e)}>
                                                                 <FaTrash size={20} />
                                                             </button>
                                                         </div>

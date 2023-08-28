@@ -126,7 +126,7 @@ const ExcutiveTableTwo = () => {
         },
       },
       {
-        Header: "Status",
+        Header: <div className='ps-5'>Status</div>,
         accessor: "Name",
         Cell: ({ row }) => {
           return (

@@ -38,7 +38,7 @@ const Reject = ({ item, handleVendorList }) => {
   return (
     <div>
       <h6 className="text-left">Rejection reason</h6>
-      <p className="text-left mt-2">Are you sure reject this Contract?</p>
+      <p className="text-left mt-2">Are you sure reject this Purchase Contract?</p>
       <textarea
         name=""
         id=""

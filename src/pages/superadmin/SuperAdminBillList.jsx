@@ -58,10 +58,6 @@ const SuperAdminBillList = () => {
             accessor: "LegalName",
           },
           
-    
-      
-    
-          
           {
             Header: "Amount",
             accessor: "InvoiceTotal",
@@ -70,7 +66,7 @@ const SuperAdminBillList = () => {
             },
           },
           {
-            Header: "Status",
+            Header: <div className='ps-5'>Status</div>,
             accessor: "Name",
             Cell: ({ row }) => {
               return (
